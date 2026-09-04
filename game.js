@@ -1501,6 +1501,8 @@ function showGameOver(score){
   var qualifies=lbQualifies(game.score);
   var nameRow=document.getElementById('lb-name-row');
   if(nameRow){ nameRow.hidden=!qualifies; if(qualifies) document.getElementById('lb-name').value=''; }
+  var btnSaveScore=document.getElementById('btn-save-score');
+  if(btnSaveScore) btnSaveScore.disabled=false;
   document.getElementById('game-screen').classList.remove('in-game');
   transitionTo('#gameover-screen', true);
 }
@@ -1562,7 +1564,9 @@ function renderShareCard(cv){
 }
 
 /* ================================================================
-   LOCAL LEADERBOARD  ("WHO DODGED THE MOST?")
+   GLOBAL LEADERBOARD  ("WHO DODGED THE MOST?")
+   Server-sorted via /api/leaderboard; the local board stays as an
+   offline fallback (and feeds the "does this score qualify?" gate).
    ================================================================ */
 function lbLoad(){
   try{ return JSON.parse(localStorage.getItem('fm-board')||'[]'); }catch(e){ return []; }
@@ -1574,24 +1578,51 @@ function lbQualifies(score){
   return b.length<5 || score>b[b.length-1].s;
 }
 function lbAdd(name, score){
+  // local record (offline fallback / personal board)
   var b=lbLoad();
   b.push({n:(name||'ANONYMOUS DODGER').toUpperCase().slice(0,18), s:score, t:Date.now()});
   b.sort(function(a,c){ return c.s-a.s; });
   lbSave(b);
+  // sync to the global board; silently ignored when unreachable
+  try{
+    fetch('/api/leaderboard', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name:name, score:score})
+    }).catch(function(){});
+  }catch(e){}
 }
-function lbRender(tab){
-  var b=lbLoad();
-  var now=Date.now();
-  if(tab==='today') b=b.filter(function(r){ return now-r.t<86400000; });
+function lbDraw(list){
   var el=document.getElementById('lb-list');
-  if(!b.length){
+  if(!list.length){
     el.innerHTML='<div class="lb-empty">NO DODGERS YET. THE BAR IS ON THE FLOOR.</div>';
     return;
   }
-  el.innerHTML=b.map(function(r,i){
+  el.innerHTML=list.map(function(r,i){
     var rank=rankFor(r.s);
     return '<div class="lb-row"><span class="lb-pos">'+(i+1)+'</span><span class="lb-name">'+r.n+'</span><span class="lb-rank">'+(rank?rank[1]:'CIVILIAN')+'</span><span class="lb-score">'+r.s+'</span></div>';
   }).join('');
+}
+function lbRender(tab){
+  var el=document.getElementById('lb-list');
+  if(el) el.innerHTML='<div class="lb-empty">SYNCING WITH BUREAUCRACY...</div>';
+  var done=false;
+  function fallback(){
+    if(done) return; done=true;
+    var b=lbLoad();
+    if(tab==='today') b=b.filter(function(r){ return Date.now()-r.t<86400000; });
+    lbDraw(b);
+  }
+  try{
+    fetch('/api/leaderboard?tab='+encodeURIComponent(tab)).then(function(r){
+      return r.ok ? r.json() : Promise.reject();
+    }).then(function(d){
+      done=true;
+      lbDraw(d.scores||[]);
+    }).catch(fallback);
+    // don't let a hanging request keep the placeholder forever
+    setTimeout(fallback, 4000);
+  }catch(e){ fallback(); }
 }
 
 /* ================================================================
@@ -1754,6 +1785,8 @@ window.addEventListener('load', function(){
   var btnSaveScore=document.getElementById('btn-save-score');
   if(btnSaveScore){
     btnSaveScore.onclick=function(){
+      if(btnSaveScore.disabled) return;
+      btnSaveScore.disabled=true;
       lbAdd(document.getElementById('lb-name').value, game.score);
       document.getElementById('lb-name-row').hidden=true;
       btnSaveScore.textContent='SAVED';
