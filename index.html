@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FLAPPY MARCOS</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen" class="screen active invisible">
+  <div class="loader-content">
+    <h1 class="loading-title">FLAPPY MARCOS</h1>
+    <p class="loading-subtitle">Initializating bureaucracy...</p>
+    <div class="loadbar"><div class="loadbar-fill" id="load-fill"></div></div>
+  </div>
+</div>
+
+<!-- MENU -->
+<div id="menu-screen" class="screen invisible">
+  <div class="menu-content">
+    <span class="menu-tagline">Avoid accountability. Stay airborne.</span>
+    <h1 class="game-title">FLAPPY<br>MARCOS</h1>
+    <div class="menu-actions">
+      <button id="btn-start" class="btn btn-primary">START FLYING</button>
+      <div class="menu-grid">
+        <button id="btn-howto" class="btn btn-secondary btn-small">HOW TO PLAY</button>
+        <button id="btn-settings" class="btn btn-secondary btn-small">SETTINGS</button>
+        <button id="btn-leaderboard" class="btn btn-secondary btn-small">LEADERBOARD</button>
+        <button id="btn-about" class="btn btn-secondary btn-small">ABOUT</button>
+      </div>
+    </div>
+    <div class="menu-best" id="menu-best"></div>
+    <div class="menu-footer">A political satire game. Not affiliated with any administration.</div>
+  </div>
+</div>
+
+<!-- HOW TO PLAY -->
+<div id="howto-overlay" class="modal invisible">
+  <div class="modal-panel">
+    <button class="modal-close" data-target="howto-overlay">&times;</button>
+    <h2>HOW TO PLAY</h2>
+    <div class="howto-steps">
+      <div class="step"><span class="step-icon">&#9650;</span><p><strong>Tap / Click / Space</strong> to flap upward</p></div>
+      <div class="step"><span class="step-icon">&#127943;</span><p>Dodge flood-control projects, pylons, fuel and power prices, bills and paperwork</p></div>
+      <div class="step"><span class="step-icon">&#9888;</span><p>Survive blackouts, floods and ACCOUNTABILITY</p></div>
+      <div class="step"><span class="step-icon">&#127909;</span><p>At press conferences, choose wisely. Or deflect.</p></div>
+      <div class="step"><span class="step-icon">&#127943;</span><p>Each issue dodged = +1 point</p></div>
+      <div class="step"><span class="step-icon">&#9203;</span><p>Esc / P pauses. If you dare.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings-overlay" class="modal invisible">
+  <div class="modal-panel">
+    <button class="modal-close" data-target="settings-overlay">&times;</button>
+    <h2>SETTINGS</h2>
+    <div class="settings-group">
+      <label class="setting-row"><span>Sound</span><input type="checkbox" id="setting-sound" checked></label>
+      <label class="setting-row"><span>Music</span><input type="checkbox" id="setting-music" checked></label>
+      <label class="setting-row"><span>Haptics</span><input type="checkbox" id="setting-haptics" checked></label>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="lb-overlay" class="modal invisible">
+  <div class="modal-panel">
+    <button class="modal-close" data-target="lb-overlay">&times;</button>
+    <h2>WHO DODGED THE MOST?</h2>
+    <div class="lb-tabs">
+      <button id="lb-tab-today" class="lb-tab">TODAY</button>
+      <button id="lb-tab-all" class="lb-tab on">ALL-TIME</button>
+    </div>
+    <div id="lb-list" class="lb-list"></div>
+    <div class="lb-note">Stored locally. No servers were harmed, or consulted.</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about-overlay" class="modal invisible">
+  <div class="modal-panel">
+    <button class="modal-close" data-target="about-overlay">&times;</button>
+    <h2>ABOUT</h2>
+    <p class="about-text">
+      FLAPPY MARCOS is a work of political satire. It comments on systems,
+      public controversies and political messaging through exaggeration and
+      absurdism. All headlines, statements, prices and projects are fictional.
+      No real quotations are attributed to any real person.
+    </p>
+    <p class="about-tag">Everything is falling apart. Keep flying.</p>
+  </div>
+</div>
+
+<!-- PRESS CONFERENCE -->
+<div id="presser-overlay" class="modal invisible">
+  <div class="modal-panel presser-panel">
+    <div class="presser-live"><span class="live-dot"></span>BREAKING NEWS</div>
+    <h2 class="presser-title">PRESS CONFERENCE</h2>
+    <p class="presser-statement" id="presser-statement"></p>
+    <div class="presser-actions">
+      <button id="btn-deflect" class="btn btn-primary">DEFLECT</button>
+      <button id="btn-address" class="btn btn-secondary btn-small">ADDRESS THE ISSUE</button>
+    </div>
+    <p class="presser-hint">Space = deflect, obviously.</p>
+  </div>
+</div>
+
+<!-- GAMEPLAY -->
+<div id="game-screen" class="screen invisible">
+  <canvas id="game-canvas"></canvas>
+  <div class="vignette" id="vignette"></div>
+  <div class="hud-score" id="hud-score">
+    <div class="hud-num" id="hud-num">0</div>
+    <div class="hud-label">ISSUES DODGED</div>
+  </div>
+  <div class="hud-combo" id="hud-combo"></div>
+  <div class="hud-message" id="hud-message"></div>
+  <div class="hud-rank" id="hud-rank"></div>
+  <button id="btn-pause-hud" class="hud-pause" aria-label="Pause">&#10074;&#10074;</button>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameover-screen" class="screen invisible">
+  <div class="gameover-panel">
+    <h2 class="go-title" id="go-title">ACCOUNTABILITY CAUGHT YOU.</h2>
+    <div class="go-death-text" id="go-death-text"></div>
+    <div class="go-stats" id="go-stats"></div>
+    <div class="go-headline" id="go-headline"></div>
+    <div class="lb-name-row" id="lb-name-row" hidden>
+      <input id="lb-name" class="lb-input" maxlength="18" placeholder="YOUR NAME">
+      <button id="btn-save-score" class="btn btn-secondary btn-small">SAVE TO LEADERBOARD</button>
+    </div>
+    <div class="go-actions">
+      <button id="btn-retry" class="btn btn-primary">TRY AGAIN</button>
+      <button id="btn-share" class="btn btn-secondary btn-small">SHARE SCORE</button>
+      <button id="btn-menu-go" class="btn btn-secondary btn-small">MENU</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE CARD -->
+<div id="share-overlay" class="modal invisible">
+  <div class="modal-panel share-panel">
+    <button class="modal-close" data-target="share-overlay">&times;</button>
+    <h2>YOUR LEGACY</h2>
+    <div class="share-canvas-wrap"><canvas id="share-canvas" width="900" height="1200"></canvas></div>
+    <div class="share-actions">
+      <button id="btn-share-send" class="btn btn-primary btn-small">SHARE</button>
+      <button id="btn-share-dl" class="btn btn-secondary btn-small">DOWNLOAD</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAUSE -->
+<div id="pause-overlay" class="modal invisible">
+  <div class="modal-panel pause-panel">
+    <h2>PAUSED</h2>
+    <p class="pause-sub">Accountability waits for no one. Except now.</p>
+    <button class="btn btn-primary" id="btn-resume">RESUME</button>
+    <button class="btn btn-secondary" id="btn-pause-menu">MENU</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
