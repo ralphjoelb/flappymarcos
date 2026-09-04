@@ -1557,7 +1557,7 @@ function renderShareCard(cv){
   ctx.strokeRect(30,30,W-60,H-60);
   ctx.fillStyle='rgba(255,255,255,.4)';
   ctx.font='22px "Space Grotesk",sans-serif';
-  ctx.fillText('Avoid accountability. Stay airborne.',W/2,1120);
+  ctx.fillText('Dodge issues. Avoid accountability.',W/2,1120);
   ctx.fillText('A political satire game.',W/2,1155);
 }
 
@@ -1723,7 +1723,7 @@ window.addEventListener('load', function(){
   var btnShareSend=document.getElementById('btn-share-send');
   if(btnShareSend){
     btnShareSend.onclick=function(){
-      var text='I DODGED '+game.score+' ISSUES in FLAPPY MARCOS. Longest flight: '+fmtTime(game.longest)+'. Avoid accountability. Stay airborne.';
+      var text='I DODGED '+game.score+' ISSUES in FLAPPY MARCOS. Longest flight: '+fmtTime(game.longest)+'. Dodge issues. Avoid accountability.';
       var done=function(){ btnShareSend.textContent='READY!'; setTimeout(function(){btnShareSend.textContent='SHARE';},1500); };
       var blob=window.__fm._shareBlob;
       if(blob && navigator.canShare){

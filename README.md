@@ -1,6 +1,6 @@
 # FLAPPY MARCOS
 
-> *Avoid accountability. Stay airborne.*
+> *Dodge issues. Avoid accountability.*
 
 A Flappy Bird-style political satire game of contemporary Philippine governance.
 Everything is falling apart — dodge flood-control projects, fuel price hikes,
