@@ -22,16 +22,26 @@ function dayKey(){
   return 'fm-lb:day:' + new Date().toISOString().slice(0, 10);
 }
 
+/* The Vercel Marketplace integration injects KV_REST_API_URL/TOKEN;
+   older setups use UPSTASH_REDIS_REST_URL/TOKEN. Accept both. */
+function redisConfig(){
+  return {
+    url:  process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN
+  };
+}
+
 function cleanName(v){
   var n = String(v || '').toUpperCase().replace(/[^A-Z0-9 .,!?'-]/g, '').trim().slice(0, 18);
   return n || 'ANONYMOUS DODGER';
 }
 
 async function redis(cmds){
-  var res = await fetch(process.env.UPSTASH_REDIS_REST_URL + '/pipeline', {
+  var cfg = redisConfig();
+  var res = await fetch(cfg.url + '/pipeline', {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer ' + process.env.UPSTASH_REDIS_REST_TOKEN,
+      Authorization: 'Bearer ' + cfg.token,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(cmds)
@@ -54,7 +64,8 @@ function parseEntries(raw){
 
 module.exports = async function handler(req, res){
   try{
-    if(!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN){
+    var cfg = redisConfig();
+    if(!cfg.url || !cfg.token){
       return res.status(503).json({ ok: false, error: 'leaderboard not connected' });
     }
 
