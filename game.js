@@ -1047,10 +1047,10 @@ class Game {
     if(this.stats.flight >= this.nextEventAt){
       var p=this.score;
       var pool=[];
-      if(p>=20) pool.push('blackout');
-      if(p>=25) pool.push('flood');
-      if(p>=35) pool.push('accountability');
-      if(p>=60) pool.push('presser');
+      if(p>=10) pool.push('flood');
+      if(p>=30) pool.push('presser');
+      if(p>=50) pool.push('accountability');
+      if(p>=70) pool.push('blackout');
       if(!pool.length){ this.scheduleNextEvent(); return; }
       this.triggerEvent(pick(pool));
     }
