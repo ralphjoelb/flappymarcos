@@ -147,7 +147,8 @@ html, body {
   font-family:'Bebas Neue',sans-serif; font-size:clamp(.85rem,3vw,1.05rem); letter-spacing:.1em; margin-bottom:1.4rem; text-align:center;
   width:fit-content; margin-left:auto; margin-right:auto;
 }
-.lb-name-row { display:flex; gap:.6rem; margin-bottom:1.4rem; align-items:center; }
+.lb-name-row { display:flex; flex-direction:column; gap:.6rem; margin-bottom:1.4rem; align-items:stretch; }
+.lb-name-row .btn { width:100%; }
 .lb-name-row[hidden] { display:none; }
 .lb-input {
   flex:1; background:rgba(255,255,255,.06); border:1px solid var(--glass-border); border-radius:10px;
