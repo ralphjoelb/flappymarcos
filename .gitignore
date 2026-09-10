@@ -1,4 +1,5 @@
 .DS_Store
 .playwright-mcp/
+.claude/
 *.png
-!marcos.png
+!assets/**/*.png

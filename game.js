@@ -1,13 +1,15 @@
 /* ================================================================
-   FLAPPY MARCOS v2 - Political Satire Game
-   Everything falling apart. Keep flying. Avoid accountability.
+   GHOST PROJECT v2 - Political Satire Game
+   You are the ghost of a project that never existed: funded,
+   declared completed, never built. Haunt the infrastructure.
+   Dodge issues. Avoid accountability.
    ================================================================ */
 
 const CFG = { W: 420, H: 750, GRAV: 0.42, FLAP: -7.6, BASE_SPD: 2.5, GAP_BASE: 200 };
 
 const RANKS = [
   [10,'LOCAL ISSUE'],[25,'NATIONAL ISSUE'],[50,'PRESS CONFERENCE'],
-  [100,'SYSTEMIC'],[250,'BAGONG PROBLEMA'],[500,'STILL FLYING'],
+  [100,'SYSTEMIC'],[250,'CERTIFIED GHOST'],[500,'STILL FLYING'],
   [1000,'HOW ARE YOU STILL FLYING?']
 ];
 
@@ -22,7 +24,7 @@ const MILESTONES = [
 ];
 
 const STAMPS = ['APPROVED','URGENT','FOR REVIEW','CONFIDENTIAL','AUDIT','UNDER INVESTIGATION'];
-const BILLBOARD_TEXTS = ['BAGONG PILIPINAS','PROGRESS SOON!','UNDER REPAIR SINCE 1998','VOTE WISELY. OR NOT.'];
+const BILLBOARD_TEXTS = ['SANA ALL INFRASTRUCTURE','PROGRESS SOON!','UNDER REPAIR SINCE 1998','VOTE WISELY. OR NOT.'];
 
 const PRESS_STATEMENTS = [
   '"We are looking into it."',
@@ -35,7 +37,7 @@ const PRESS_STATEMENTS = [
 ];
 
 const HEADLINES = [
-  'BREAKING: MARCOS FINALLY GROUNDED',
+  'BREAKING: GHOST VANISHES MID-FLIGHT',
   'BREAKING: FLOOD CONTROLS NOT FOUND',
   'BREAKING: POWER OUTAGE CONFIRMED',
   'BREAKING: PESO FALLS, HERO FALLS FURTHER',
@@ -75,6 +77,71 @@ function loadImage(src) {
     i.onerror = () => r(null);
     i.src = src;
   });
+}
+
+/* ================================================================
+   THE GHOST — protagonist. The ghost of a project that never
+   existed: a hard hat floating over a wavy sheet. Drawn entirely
+   in code (original character art — see docs/ASSET_REGISTER.md).
+   ================================================================ */
+function drawGhostSprite(ctx, r, opts){
+  var silhouette = !!(opts && opts.silhouette);
+  var t = (opts && opts.t) || Date.now()/1000;
+  // faint ambient glow
+  if(!silhouette){
+    var glow=ctx.createRadialGradient(0,0,r*0.5,0,0,r*2.1);
+    glow.addColorStop(0,'rgba(245,240,232,0.22)');
+    glow.addColorStop(1,'rgba(245,240,232,0)');
+    ctx.fillStyle=glow;
+    ctx.beginPath(); ctx.arc(0,0,r*2.1,0,Math.PI*2); ctx.fill();
+  }
+  // body: dome top + scalloped hem that drifts like a sheet
+  var hem = r*0.78 + Math.sin(t*3)*1.5;
+  ctx.beginPath();
+  ctx.arc(0, -r*0.12, r, Math.PI, 0);
+  ctx.lineTo(r, hem);
+  for(var i=0;i<3;i++){
+    var cpX = r - (2*i+1)*(r/3);
+    var endX = r - (i+1)*(2*r/3);
+    ctx.quadraticCurveTo(cpX, hem + r*0.24, endX, hem);
+  }
+  ctx.closePath();
+  if(silhouette){
+    ctx.fillStyle='#0a0a0f';
+    ctx.fill();
+    ctx.strokeStyle='rgba(255,215,0,.55)';
+    ctx.lineWidth=2;
+    ctx.stroke();
+    return;
+  }
+  ctx.fillStyle='rgba(246,243,233,0.96)';
+  ctx.fill();
+  ctx.strokeStyle='rgba(16,20,40,0.45)';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+  // oval eyes (occasional blink)
+  var blink = Math.sin(t*2.1)>0.97 ? 0.18 : 1;
+  ctx.fillStyle='#10141f';
+  for(var e=-1;e<=1;e+=2){
+    ctx.beginPath();
+    ctx.ellipse(e*r*0.33, -r*0.34, r*0.13, r*0.24*blink, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+  // tiny distressed mouth
+  ctx.beginPath();
+  ctx.arc(0, r*0.1, r*0.09, 0, Math.PI*2);
+  ctx.fillStyle='#10141f';
+  ctx.fill();
+  // askew hard hat — the worker the project never hired
+  ctx.save();
+  ctx.rotate(-0.16);
+  ctx.fillStyle='#F2C94C';
+  ctx.beginPath();
+  ctx.arc(r*0.08, -r*1.02, r*0.4, Math.PI, 0);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillRect(-r*0.36, -r*1.04, r*0.9, r*0.09);
+  ctx.restore();
 }
 
 /* ================================================================
@@ -219,31 +286,12 @@ class Player {
       ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill();
       ctx.restore();
     }
-    ctx.beginPath();
-    ctx.arc(0,0,r+3,0,Math.PI*2);
-    ctx.fillStyle = silhouette ? '#0a0a0f' : '#D4A843';
-    ctx.fill();
-    if(silhouette){
-      ctx.strokeStyle='rgba(255,215,0,.55)';
-      ctx.lineWidth=2;
-      ctx.stroke();
-      ctx.restore();
-      return;
-    }
     if(this.img){
-      ctx.beginPath();
-      ctx.arc(0,0,r-1,0,Math.PI*2);
-      ctx.clip();
-      ctx.drawImage(this.img, -r, -r, r*2, r*2);
+      // character art hook: a transparent PNG (assets/characters/) drawn
+      // over the hitbox. The code-drawn ghost is the default art.
+      ctx.drawImage(this.img, -r*1.15, -r*1.15, r*2.3, r*2.3);
     } else {
-      // fallback bird if marcos.png failed to load
-      ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fillStyle='#F2D06B'; ctx.fill();
-      ctx.beginPath(); ctx.arc(r*0.3,-r*0.25,3.2,0,Math.PI*2); ctx.fillStyle='#1a1a2e'; ctx.fill();
-      ctx.save();
-      ctx.rotate(Math.sin(Date.now()/140)*0.5);
-      ctx.beginPath(); ctx.ellipse(-r*0.15, r*0.1, r*0.55, r*0.3, -0.3, 0, Math.PI*2); ctx.fillStyle='#D4A843'; ctx.fill();
-      ctx.restore();
-      ctx.beginPath(); ctx.moveTo(r*0.8,-r*0.1); ctx.lineTo(r*1.35,0); ctx.lineTo(r*0.8,r*0.18); ctx.closePath(); ctx.fillStyle='#E53935'; ctx.fill();
+      drawGhostSprite(ctx, r, { silhouette: silhouette, t: Date.now()/1000 });
     }
     ctx.restore();
   }
@@ -308,18 +356,19 @@ class FloodWall {
         }
       }
     }
-    // project sign plate (above the top cap lip)
+    // project sign plate (above the top cap lip) — fictional agency,
+    // amber hazard styling: deliberately not an official-sign lookalike
     ctx.save();
     ctx.translate(this.x, Math.max(top-52, 26));
-    ctx.fillStyle='#0A3D8F';
+    ctx.fillStyle='#B45309';
     ctx.fillRect(-62,-11,124,22);
-    ctx.strokeStyle='#F5F0E8';
+    ctx.strokeStyle='#1a1a2e';
     ctx.lineWidth=1.5;
     ctx.strokeRect(-62,-11,124,22);
     ctx.fillStyle='#F5F0E8';
     ctx.font='bold 7.5px "Space Grotesk",sans-serif';
     ctx.textAlign='center';
-    ctx.fillText('FLOOD CONTROL PROJECT',0,3);
+    ctx.fillText('BUREAU OF FLOODWORKS',0,3);
     ctx.restore();
     // top cap lip framing the gap
     ctx.fillStyle='#7A756E';
@@ -1457,7 +1506,7 @@ class Game {
     var t=Date.now()/1000;
     ctx.clearRect(0,0,CFG.W,CFG.H);
     this.bg.draw(ctx, 0, t);
-    // marcos idles mid-air
+    // the ghost idles mid-air
     this.player.x=CFG.W*0.7;
     this.player.y=CFG.H*0.2+Math.sin(t*2.2)*14;
     this.player.angle=Math.sin(t*2.2+0.6)*0.12;
@@ -1528,21 +1577,21 @@ function renderShareCard(cv){
   }
   ctx.fillStyle='rgba(20,26,44,.9)';
   ctx.fillRect(0,H-120,W,120);
-  // gold ring marcos
+  // gold ring ghost
   var px=W/2, py=330;
   ctx.save();
   ctx.beginPath(); ctx.arc(px,py,120,0,Math.PI*2);
   ctx.fillStyle='#D4A843'; ctx.fill();
-  if(game.player.img){
-    ctx.beginPath(); ctx.arc(px,py,112,0,Math.PI*2); ctx.clip();
-    ctx.drawImage(game.player.img,px-112,py-112,224,224);
-  }
+  ctx.restore();
+  ctx.save();
+  ctx.translate(px, py+8);
+  drawGhostSprite(ctx, 82, {t:t});
   ctx.restore();
   // texts
   ctx.textAlign='center';
   ctx.fillStyle='#F2D06B';
   ctx.font='bold 90px "Bebas Neue",sans-serif';
-  ctx.fillText('FLAPPY MARCOS',W/2,150);
+  ctx.fillText('GHOST PROJECT',W/2,150);
   ctx.fillStyle='#fff';
   ctx.font='bold 110px "Bebas Neue",sans-serif';
   ctx.fillText('I DODGED '+game.score,W/2,560);
@@ -1583,14 +1632,21 @@ function lbAdd(name, score){
   b.push({n:(name||'ANONYMOUS DODGER').toUpperCase().slice(0,18), s:score, t:Date.now()});
   b.sort(function(a,c){ return c.s-a.s; });
   lbSave(b);
-  // sync to the global board; silently ignored when unreachable
+}
+function lbSubmit(name, score){
+  // sync to the global board; resolves with the Response (or null offline)
   try{
-    fetch('/api/leaderboard', {
+    return fetch('/api/leaderboard', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({name:name, score:score})
-    }).catch(function(){});
-  }catch(e){}
+    }).catch(function(){ return null; });
+  }catch(e){ return Promise.resolve(null); }
+}
+function escHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
 }
 function lbDraw(list){
   var el=document.getElementById('lb-list');
@@ -1600,7 +1656,7 @@ function lbDraw(list){
   }
   el.innerHTML=list.map(function(r,i){
     var rank=rankFor(r.s);
-    return '<div class="lb-row"><span class="lb-pos">'+(i+1)+'</span><span class="lb-name">'+r.n+'</span><span class="lb-rank">'+(rank?rank[1]:'CIVILIAN')+'</span><span class="lb-score">'+r.s+'</span></div>';
+    return '<div class="lb-row"><span class="lb-pos">'+(i+1)+'</span><span class="lb-name">'+escHtml(r.n)+'</span><span class="lb-rank">'+(rank?rank[1]:'CIVILIAN')+'</span><span class="lb-score">'+r.s+'</span></div>';
   }).join('');
 }
 function lbRender(tab){
@@ -1754,11 +1810,11 @@ window.addEventListener('load', function(){
   var btnShareSend=document.getElementById('btn-share-send');
   if(btnShareSend){
     btnShareSend.onclick=function(){
-      var text='I DODGED '+game.score+' ISSUES in FLAPPY MARCOS. Longest flight: '+fmtTime(game.longest)+'. Dodge issues. Avoid accountability.';
+      var text='I dodged '+game.score+' issues in GHOST PROJECT. Longest flight: '+fmtTime(game.longest)+'. Dodge issues. Avoid accountability.';
       var done=function(){ btnShareSend.textContent='READY!'; setTimeout(function(){btnShareSend.textContent='SHARE';},1500); };
       var blob=window.__fm._shareBlob;
       if(blob && navigator.canShare){
-        var file=new File([blob],'flappy-marcos.png',{type:'image/png'});
+        var file=new File([blob],'ghost-project.png',{type:'image/png'});
         if(navigator.canShare({files:[file]})){
           navigator.share({files:[file], text:text}).then(done).catch(function(){});
           return;
@@ -1775,7 +1831,7 @@ window.addEventListener('load', function(){
       if(!blob) return;
       var a=document.createElement('a');
       a.href=URL.createObjectURL(blob);
-      a.download='flappy-marcos-score.png';
+      a.download='ghost-project-score.png';
       a.click();
       setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
     };
@@ -1787,10 +1843,24 @@ window.addEventListener('load', function(){
     btnSaveScore.onclick=function(){
       if(btnSaveScore.disabled) return;
       btnSaveScore.disabled=true;
-      lbAdd(document.getElementById('lb-name').value, game.score);
-      document.getElementById('lb-name-row').hidden=true;
-      btnSaveScore.textContent='SAVED';
-      setTimeout(function(){btnSaveScore.textContent='SAVE TO LEADERBOARD';},1500);
+      var name=document.getElementById('lb-name').value;
+      lbAdd(name, game.score); // the local board always records the run
+      var done=function(){
+        document.getElementById('lb-name-row').hidden=true;
+        btnSaveScore.textContent='SAVED';
+        setTimeout(function(){btnSaveScore.textContent='SAVE TO LEADERBOARD';},1500);
+      };
+      lbSubmit(name, game.score).then(function(res){
+        if(res && res.status===422){
+          // the moderation filter rejected that name — post anonymously
+          document.getElementById('lb-name').value='';
+          btnSaveScore.textContent='SAVED ANONYMOUSLY';
+          lbSubmit('ANONYMOUS DODGER', game.score).then(done);
+          setTimeout(function(){btnSaveScore.textContent='SAVE TO LEADERBOARD';},1500);
+        } else {
+          done();
+        }
+      });
     };
   }
 
@@ -1882,8 +1952,8 @@ function gameLoop(ts){
 }
 requestAnimationFrame(gameLoop);
 
-loadImage('marcos.png').then(function(img){
-  if(img) game.player.img=img;
-});
+/* Character art hook: to use custom art instead of the code-drawn ghost,
+   drop a transparent PNG under assets/characters/ and assign it to
+   game.player.img (see docs/ASSET_REGISTER.md). */
 
 window.addEventListener('resize', function(){ game.resize(); });

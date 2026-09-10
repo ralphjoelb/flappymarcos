@@ -1,0 +1,125 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:35:24.397Z",
+        "reason": "Pre-existing confirmed game aesthetic: gold/red glow is danger/celebration feedback in the canvas game UI, retained per the approved Phase 1 rebrand plan which preserves existing design; no new instances introduced by this task."
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:35:24.413Z",
+        "reason": "Pre-existing satirical fine-print aesthetic (menu footer, leaderboard note, hints) retained per the approved Phase 1 rebrand plan; rebrand only changed string content."
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "style.css"
+        ],
+        "createdAt": "2026-09-10T09:35:24.427Z",
+        "reason": "Pre-existing signature game styling (gold-gradient title and headline) retained per the approved Phase 1 rebrand plan; rebrand only changed string content."
+      },
+      {
+        "rule": "hero-eyebrow-chip",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.879Z",
+        "reason": "Pre-existing confirmed menu design: satirical tagline kicker over the gold game title is the game's identity, retained per the approved Phase 1 rebrand plan; rebrand only swapped the title strings."
+      },
+      {
+        "rule": "all-caps-body",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.897Z",
+        "reason": "Pre-existing satirical tagline (short kicker text, not body copy) retained per the approved rebrand plan."
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.914Z",
+        "reason": "Pre-existing letterspacing on short uppercase labels/headings only (arcade aesthetic), which the rule itself reserves tracking for; no long body text is tracked."
+      },
+      {
+        "rule": "kicker-above-heading",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.930Z",
+        "reason": "Diegetic satire: the BREAKING NEWS chip + pulsing dot above PRESS CONFERENCE is the TV-news parody itself (in-game modal fiction), not a generated marketing kicker."
+      },
+      {
+        "rule": "pulsing-dot",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.949Z",
+        "reason": "Diegetic satire: the live-dot is the ON-AIR broadcast joke inside the fictional press-conference modal, tied to a game event, not decorative app UI."
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.966Z",
+        "reason": "Pre-existing signature game styling (gold-gradient title/headline) retained per the approved Phase 1 rebrand plan."
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-10T09:48:43.984Z",
+        "reason": "Pre-existing brand typeface (Space Grotesk, OFL) chosen for the game's identity before this session; swapping typefaces is a redesign decision for the owner, not part of the approved rebrand scope."
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          "style.css"
+        ],
+        "createdAt": "2026-09-10T09:48:44.000Z",
+        "reason": "Pre-existing brand typeface (Space Grotesk, OFL) carried over from the original game design; owner decision, out of rebrand scope."
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          "privacy.html"
+        ],
+        "createdAt": "2026-09-10T09:48:44.017Z",
+        "reason": "Space Grotesk chosen deliberately for brand consistency with the game's legal pages; OFL-licensed."
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          "terms.html"
+        ],
+        "createdAt": "2026-09-10T09:48:44.034Z",
+        "reason": "Space Grotesk chosen deliberately for brand consistency with the game's legal pages; OFL-licensed."
+      }
+    ]
+  }
+}

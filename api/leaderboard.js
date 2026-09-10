@@ -3,6 +3,7 @@
 
    GET  /api/leaderboard?tab=all|today   → { ok, scores: [{n, s, t}] }
    POST /api/leaderboard { name, score } → { ok, scores: [...] }
+        422 when the name is rejected by the moderation filter
 
    Storage: two sorted sets —
      fm-lb:all          all-time top scores
@@ -34,6 +35,31 @@ function redisConfig(){
 function cleanName(v){
   var n = String(v || '').toUpperCase().replace(/[^A-Z0-9 .,!?'-]/g, '').trim().slice(0, 18);
   return n || 'ANONYMOUS DODGER';
+}
+
+/* Moderation filter (impersonation + abuse). This list is filter data,
+   not game copy: it is the one sanctioned place in the repo where real
+   officials' names appear — see docs/POLITICAL_CONTENT_GUIDELINES.md.
+   Word-boundary matched; common non-political surnames can collide
+   (documented tradeoff, keep the list tight). */
+var BLOCKED_NAMES = [
+  'MARCOS', 'BONGBONG', 'BONG BONG', 'BBM', 'PBBM',
+  'DUTERTE', 'DIGONG', 'FPRRD', 'PRRD',
+  'SARA DUTERTE', 'INDAY SARA',
+  'AQUINO', 'NOYNOY', 'ABNOY',
+  'ARROYO', 'GLORIA MACAPAGAL', 'GMA',
+  'ESTRADA', 'ERAP',
+  'RAMOS', 'IMELDA',
+  'FLAPPY MARCOS',
+  'GAGO', 'PUTANG', 'PUTA', 'TANGA', 'BOBO', 'TAE', 'PUCHU'
+];
+
+function isBlockedName(name){
+  var padded = ' ' + String(name).replace(/\s+/g, ' ').trim().toUpperCase() + ' ';
+  for(var i = 0; i < BLOCKED_NAMES.length; i++){
+    if(padded.indexOf(' ' + BLOCKED_NAMES[i] + ' ') !== -1) return true;
+  }
+  return false;
 }
 
 async function redis(cmds){
@@ -82,6 +108,9 @@ module.exports = async function handler(req, res){
         return res.status(400).json({ ok: false, error: 'implausible score' });
       }
       var name = cleanName(body.name);
+      if(isBlockedName(name)){
+        return res.status(422).json({ ok: false, error: 'name not allowed' });
+      }
 
       // rate limit per IP (x-forwarded-for is set by Vercel's edge)
       var ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
