@@ -17,7 +17,8 @@ Anything that contradicts this file should not ship.
 
 ## The protagonist (current cast, MVP)
 
-**THE GHOST** — the ghost of a project that never existed. A small sheet
+**THE GHOST** — the ghost of a project that never was (funded, declared
+complete, but never started or never finished). A small sheet
 of a ghost wearing an askew yellow hard hat (the worker the project never
 hired). Oval eyes, tiny distressed mouth, faint glow, wavy hem that
 drifts. Drawn entirely in code (`drawGhostSprite` in `game.js`) — original
