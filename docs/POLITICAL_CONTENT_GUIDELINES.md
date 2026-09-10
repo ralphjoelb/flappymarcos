@@ -27,7 +27,8 @@ content "safe".
 - Invented financial accusations tied to identifiable persons
 - Real photographs or news images
 - Real agency seals, branding, or sign-style lookalikes (the game's
-  signage is fictional "BUREAU OF FLOODWORKS", amber, not blue/white)
+  signage is the generic descriptor "FLOOD CONTROL PROJECT" on amber,
+  not blue/white official styling)
 - Administration slogans or "Bagong ___" echoes
 - Names or copy implying endorsement or affiliation
 - Real-person names, aliases, or near-puns in player-facing copy

@@ -26,8 +26,7 @@ python3 -m http.server 8080
 
 ## The satire
 
-- Flood-control walls signed **BUREAU OF FLOODWORKS** — a fictional
-  agency — with "PROJECT COMPLETED ✓" signs on visibly broken concrete
+- Flood-control walls with "PROJECT COMPLETED ✓" signs on visibly broken concrete
 - A peso coin that sinks lower the longer it's on screen, with a bearish ₱/$ chart
 - GASOLINE at ₱80/L and electricity at ₱14/kWh — absurd, fictional prices ticking up live while you fly
 - Blackouts that cut the music to an electrical buzz (only the ghost's

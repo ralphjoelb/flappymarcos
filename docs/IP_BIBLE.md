@@ -58,8 +58,10 @@ flag.
 
 ## Fictional universe rules
 
-- Agencies are fictional: **BUREAU OF FLOODWORKS** (amber signage) — never
-  a real agency's name, blue-and-white sign style, or seal.
+- Project signage uses the generic descriptor **FLOOD CONTROL PROJECT**
+  on amber hazard styling — never a real agency's name, blue-and-white
+  sign style, or seal. No invented agency names on signage (owner call:
+  fictional agency names don't read for a Filipino audience).
 - Billboards may use fictional slogans and generic Filipino internet slang
   (e.g. "SANA ALL INFRASTRUCTURE") — never administration slogans.
 - Places are generic Filipino cityscape (jeepneys, poles, wires, skyline);

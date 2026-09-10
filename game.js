@@ -356,8 +356,8 @@ class FloodWall {
         }
       }
     }
-    // project sign plate (above the top cap lip) — fictional agency,
-    // amber hazard styling: deliberately not an official-sign lookalike
+    // project sign plate (above the top cap lip) — generic descriptive
+    // text on amber hazard styling: deliberately not an official-sign lookalike
     ctx.save();
     ctx.translate(this.x, Math.max(top-52, 26));
     ctx.fillStyle='#B45309';
@@ -368,7 +368,7 @@ class FloodWall {
     ctx.fillStyle='#F5F0E8';
     ctx.font='bold 7.5px "Space Grotesk",sans-serif';
     ctx.textAlign='center';
-    ctx.fillText('BUREAU OF FLOODWORKS',0,3);
+    ctx.fillText('FLOOD CONTROL PROJECT',0,3);
     ctx.restore();
     // top cap lip framing the gap
     ctx.fillStyle='#7A756E';
