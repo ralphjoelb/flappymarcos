@@ -7,7 +7,8 @@
 ## The game
 
 GHOST PROJECT is a work of political satire. You play the ghost of a
-project that never existed. All characters, headlines, statements,
+project that never was — funded, declared complete, but never started or
+never finished. All characters, headlines, statements,
 prices, agencies and projects are fictional. No real quotations are
 attributed to any real person, and no character depicts any real person.
 The game is not affiliated with, endorsed by, or connected to any

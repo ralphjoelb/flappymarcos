@@ -5,7 +5,8 @@
 > collateral. Keep all copies in sync.
 
 GHOST PROJECT is a work of political satire. You play the ghost of a
-project that never existed — funded, declared complete, never built. It
+project that never was — funded, declared complete, but never started or
+never finished. It
 comments on public systems, controversies and political messaging through
 exaggeration and absurdism. All characters, headlines, statements, prices,
 agencies and projects are fictional. No real quotations are attributed to

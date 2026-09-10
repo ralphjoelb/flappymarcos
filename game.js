@@ -1,8 +1,8 @@
 /* ================================================================
    GHOST PROJECT v2 - Political Satire Game
-   You are the ghost of a project that never existed: funded,
-   declared completed, never built. Haunt the infrastructure.
-   Dodge issues. Avoid accountability.
+   You are the ghost of a project that never was: funded, declared
+   complete, never started — or never finished. Haunt the
+   infrastructure. Dodge issues. Avoid accountability.
    ================================================================ */
 
 const CFG = { W: 420, H: 750, GRAV: 0.42, FLAP: -7.6, BASE_SPD: 2.5, GAP_BASE: 200 };

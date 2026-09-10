@@ -9,7 +9,7 @@ Anything that contradicts this file should not ship.
 |---|---|
 | Working title | **GHOST PROJECT** |
 | Tagline | *Dodge issues. Avoid accountability.* |
-| Premise | You are the ghost of a project that never existed — funded, declared completed, never built. You haunt the infrastructure that was supposed to be yours. |
+| Premise | You are the ghost of a project that never was — funded, declared complete, but never started or never finished. You haunt the infrastructure that was supposed to be yours. |
 | Genre | 2D flappy-style arcade satire, canvas-drawn |
 | Tone | Deadpan bureaucratic absurdism. The horror is paperwork. |
 | Antagonist | **ACCOUNTABILITY** — an approaching red slab that can only be dodged, never confronted. Keep it abstract. |

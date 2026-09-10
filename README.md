@@ -3,9 +3,9 @@
 > *Dodge issues. Avoid accountability.*
 
 A political satire game about contemporary Philippine governance. You play
-**the ghost of a project that never existed** — a flood-control project
-that was funded, declared completed, and never built. Haunt the
-infrastructure that was supposed to be yours. Dodge flood-control walls,
+**the ghost of a project that never was** — a flood-control project that
+was funded and declared complete, but never started or never finished.
+Haunt the infrastructure that was supposed to be yours. Dodge flood-control walls,
 utility pylons, fuel and power prices, bills and paperwork. Keep flying.
 Avoid accountability.
 
